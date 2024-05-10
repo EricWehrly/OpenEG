@@ -10,7 +10,7 @@ export class Tile {
     material: TileMaterial;
     borderColor: THREE.Color;
 
-    constructor(material: TileMaterial = TileMaterial.Water, borderColor?: THREE.Color) {
+    constructor(material: TileMaterial = TileMaterial.Grass, borderColor?: THREE.Color) {
         this.material = material;
         this.borderColor = borderColor || new THREE.Color(0x000000); // Default to black if no color is provided
     }
@@ -18,7 +18,7 @@ export class Tile {
     getMaterialColor(): THREE.Color {
         switch (this.material) {
             case TileMaterial.Grass:
-                return new THREE.Color(0x00ff00); // Green
+                return new THREE.Color(0x228B22); // Forest Green
             case TileMaterial.Water:
                 return new THREE.Color(0x0000ff); // Blue
             case TileMaterial.Stone:
