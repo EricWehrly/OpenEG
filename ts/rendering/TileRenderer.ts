@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Tile } from './Tile';
+import { Tile } from '../Tile';
 
 export class TileRenderer {
   static scaleFactor = 32; // Default scale factor
