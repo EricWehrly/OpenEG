@@ -11,8 +11,8 @@ export default class CameraController {
 
     constructor(canvas: HTMLCanvasElement) {
         const aspectRatio = window.innerWidth / window.innerHeight;
-        const d = 20;
-        this.camera = new THREE.OrthographicCamera(-d * aspectRatio, d * aspectRatio, d, -d, 1, 1000);
+        const distance = 100;
+        this.camera = new THREE.OrthographicCamera(-distance * aspectRatio, distance * aspectRatio, distance, -distance, 1, 1000);
         this.camera.position.set(2, 2, 2);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
