@@ -1,1 +1,1 @@
-`docker run --rm -p 3000:3000 -it -v $(pwd -W):/app openeg bash`
+`docker run --rm -p 9000:9000 -it -v $(pwd -W):/app openeg bash`
