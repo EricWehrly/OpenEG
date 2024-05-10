@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Terrain } from '../Terrain';
 import CameraController from './CameraController';
+import { Diagnostics } from './diagnostics';
 
 // TODO: Make static & Singleton
 export default class Renderer {
@@ -8,6 +9,7 @@ export default class Renderer {
     terrain: Terrain;
     scene: THREE.Scene;
     camera: THREE.Camera;
+    diagnostics: Diagnostics;
 
     constructor(terrain: Terrain) {
 
@@ -29,11 +31,20 @@ export default class Renderer {
         multipliedCenter.y = 1;
         this.camera.lookAt(multipliedCenter);
 
+        // TODO: if diagnostics is enabled
+        this.diagnostics = new Diagnostics(this.renderer);
+
         this.animate.bind(this)();
+        console.log(this.renderer.info)
     }
 
     animate() {
+        const start = performance.now();
         requestAnimationFrame(this.animate.bind(this));
         this.renderer.render(this.scene, this.camera);
+        const elapsed = performance.now() - start;
+        // TODO: if diagnostics is enabled
+        // this.diagnostics.update(elapsed);
+        this.diagnostics.update(elapsed);
     }
 }
