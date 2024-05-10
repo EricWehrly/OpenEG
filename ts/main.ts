@@ -2,8 +2,6 @@ import * as THREE from 'three';
 import { Terrain } from './Terrain';
 import CameraController from "./CameraController"
 
-console.log(`starting...`);
-
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -15,10 +13,15 @@ renderer.setSize(window.innerWidth, window.innerHeight, false); // Set the canva
 
 const cameraController = new CameraController(renderer.domElement);
 
+const center = terrain.center;
+cameraController.camera.position.set(0, 90, 0);
+const multipliedCenter = terrain.center.clone().multiplyScalar(30);
+multipliedCenter.y = 1;
+// cameraController.camera.lookAt(terrain.center);
+cameraController.camera.lookAt(multipliedCenter);
+
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, cameraController.camera);
 }
 animate();
-
-console.log('...ending');

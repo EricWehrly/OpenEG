@@ -6,6 +6,10 @@ import { TileRenderer } from './TileRenderer';
 export class Terrain {
   tiles: Tile[][];
 
+  get center() {
+    return new THREE.Vector3(this.tiles.length / 2, 1, this.tiles[0].length / 2);
+  }
+
   constructor(width: number, height: number) {
     this.tiles = [];
     for (let i = 0; i < width; i++) {
