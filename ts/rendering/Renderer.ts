@@ -55,16 +55,34 @@ export default class Renderer {
     // we can probly move this to an "interaction" class
     onMouseDown(event: MouseEvent) {
 
-        if(event.button !== 0) return; // Only handle left clicks (button 0)
+        if(event.button !== 0) return; // Only handle left clicks
 
         const intersects = this.getClickedObjects(event);
 
-        for (let i = 0; i < intersects.length; i++) {
-            this.objectClicked(intersects[i]);
-        }
+        this.highlightObject(intersects[0]);
+        // for (let i = 0; i < intersects.length; i++) {
+            // this.objectClicked(intersects[i]);
+        // }
     }
 
-    private objectClicked(intersect: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>) {
+    getClickedObjects(event: MouseEvent) {
+
+        // Normalize the mouse position from -1 to 1
+        const mouse = new THREE.Vector2();
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        // Update the picking ray with the camera and mouse position
+        // TODO: Raycaster needs to stop on first hit
+        this.raycaster.setFromCamera(mouse, this.camera);
+
+        // Calculate objects intersecting the picking ray
+        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
+
+        return intersects;
+    }
+
+    private highlightObject(intersect: THREE.Intersection<THREE.Object3D>) {
 
         // We need to use "parent" in order to get the group that controls the object positioning
         console.log(`Clicked on cube with position:`, intersect.object.parent.position);
@@ -88,22 +106,5 @@ export default class Renderer {
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const line = new THREE.Line(geometry, lineMaterial);
         this.scene.add(line);
-    }
-
-    getClickedObjects(event: MouseEvent) {
-
-        // Normalize the mouse position from -1 to 1
-        const mouse = new THREE.Vector2();
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        // Update the picking ray with the camera and mouse position
-        // TODO: Raycaster needs to stop on first hit
-        this.raycaster.setFromCamera(mouse, this.camera);
-
-        // Calculate objects intersecting the picking ray
-        const intersects = this.raycaster.intersectObjects(this.scene.children, true);
-
-        return intersects;
     }
 }
