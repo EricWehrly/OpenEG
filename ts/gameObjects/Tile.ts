@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import GameObject from './GameObject';
 
 export enum TileMaterial {
     Dirt,
@@ -7,11 +8,13 @@ export enum TileMaterial {
     Stone
 }
 
-export class Tile {
+export class Tile extends GameObject {
     material: TileMaterial;
     borderColor: THREE.Color;
 
     constructor(material: TileMaterial = TileMaterial.Dirt, borderColor?: THREE.Color) {
+        super();
+        
         this.material = material;
         this.borderColor = borderColor || new THREE.Color(0x000000); // Default to black if no color is provided
     }
