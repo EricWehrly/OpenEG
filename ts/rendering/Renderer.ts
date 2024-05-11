@@ -56,8 +56,41 @@ export default class Renderer {
     onMouseDown(event: MouseEvent) {
 
         if(event.button !== 0) return; // Only handle left clicks (button 0)
+
+        const intersects = this.getClickedObjects(event);
+
+        for (let i = 0; i < intersects.length; i++) {
+            this.objectClicked(intersects[i]);
+        }
+    }
+
+    private objectClicked(intersect: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>) {
+
+        // We need to use "parent" in order to get the group that controls the object positioning
+        console.log(`Clicked on cube with position:`, intersect.object.parent.position);
         
+        // TODO: These need to be in some kind of general file
         const lineMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+        if (intersect.object instanceof THREE.LineSegments) {
+            const lineSegments = intersect.object as THREE.LineSegments;
+            (lineSegments.material as THREE.LineBasicMaterial).color.set('pink');
+        }
+        else if (intersect.object instanceof THREE.Mesh) {
+            const mesh = intersect.object as THREE.Mesh;
+            mesh.material = material;
+            // (mesh.material as THREE.LineBasicMaterial).color.set('pink');
+        }
+
+        // Create a line from the camera to the point of intersection
+        const points = [this.camera.position, intersect.point];
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        const line = new THREE.Line(geometry, lineMaterial);
+        this.scene.add(line);
+    }
+
+    getClickedObjects(event: MouseEvent) {
 
         // Normalize the mouse position from -1 to 1
         const mouse = new THREE.Vector2();
@@ -65,26 +98,12 @@ export default class Renderer {
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
         // Update the picking ray with the camera and mouse position
+        // TODO: Raycaster needs to stop on first hit
         this.raycaster.setFromCamera(mouse, this.camera);
 
         // Calculate objects intersecting the picking ray
         const intersects = this.raycaster.intersectObjects(this.scene.children, true);
 
-        for (let i = 0; i < intersects.length; i++) {
-            // intersects[i].object is the intersected object
-            // We need to use "parent" in order to get the group that controls the object positioning
-            console.log(`Clicked on cube with position:`, intersects[i].object.parent.position);
-
-            if (intersects[i].object instanceof THREE.LineSegments) {
-                const lineSegments = intersects[i].object as THREE.LineSegments;
-                (lineSegments.material as THREE.LineBasicMaterial).color.set('pink');
-                
-                // Create a line from the camera to the point of intersection
-                const points = [this.camera.position, intersects[i].point];
-                const geometry = new THREE.BufferGeometry().setFromPoints(points);
-                const line = new THREE.Line(geometry, lineMaterial);
-                this.scene.add(line);
-            }
-        }
+        return intersects;
     }
 }

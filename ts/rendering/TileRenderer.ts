@@ -6,6 +6,7 @@ export class TileRenderer {
 
   static render(tile: Tile): THREE.Group {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
+    // TODO: Cache this
     const material = new THREE.MeshBasicMaterial({ color: tile.getMaterialColor() });
     const mesh = new THREE.Mesh(geometry, material);
     mesh.scale.set(TileRenderer.scaleFactor, TileRenderer.scaleFactor, TileRenderer.scaleFactor);
