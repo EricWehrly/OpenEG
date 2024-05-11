@@ -72,6 +72,7 @@ class Renderer {
         if(event.button !== 0) return; // Only handle left clicks
 
         const intersects = this.getClickedObjects(event);
+        if(intersects.length === 0) return; // No objects clicked
         const intersected = intersects[0];
 
         this.highlightObject(intersected);
