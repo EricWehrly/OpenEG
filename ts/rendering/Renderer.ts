@@ -20,6 +20,10 @@ class Renderer {
     terrain: Terrain;
     diagnostics: Diagnostics;
 
+    getCamera() {
+        return this.camera;
+    }
+
     constructor() {
 
         if(Renderer.instance != null) {
@@ -36,11 +40,6 @@ class Renderer {
 
         const cameraController = new CameraController(this.renderer.domElement);
         this.camera = cameraController.camera;
-
-        this.camera.position.set(0, 90, 0);
-        // const multipliedCenter = terrain.center.clone().multiplyScalar(30);
-        // multipliedCenter.y = 1;
-        // this.camera.lookAt(multipliedCenter);
 
         // TODO: if diagnostics is enabled
         this.diagnostics = new Diagnostics(this.renderer);
