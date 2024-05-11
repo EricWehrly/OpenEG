@@ -8,9 +8,9 @@ export class Terrain {
 
   get center() {
     return new THREE.Vector3(
-      (this.tiles.length / 2) * TileRenderer.scaleFactor,
-      1 * TileRenderer.scaleFactor,
-      (this.tiles[0].length / 2) * TileRenderer.scaleFactor
+      (this.tiles.length / 2),
+      1,
+      (this.tiles[0].length / 2)
     );
   }
 
@@ -19,7 +19,7 @@ export class Terrain {
     for (let i = 0; i < width; i++) {
       this.tiles[i] = [];
       for (let j = 0; j < height; j++) {
-        this.tiles[i][j] = new Tile(/* ... */);
+        this.tiles[i][j] = new Tile();
       }
     }
   }
