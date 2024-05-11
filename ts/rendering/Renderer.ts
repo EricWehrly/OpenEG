@@ -5,6 +5,13 @@ import { Diagnostics } from './diagnostics';
 
 // TODO: Make static & Singleton
 export default class Renderer {
+
+    private static instance: Renderer;
+
+    static getRenderer() {
+        return Renderer.instance;
+    }
+
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.Camera;    
@@ -14,6 +21,10 @@ export default class Renderer {
     diagnostics: Diagnostics;
 
     constructor(terrain: Terrain) {
+
+        if(Renderer.instance) {
+            throw new Error('Renderer is a singleton');
+        }
 
         this.terrain = terrain;
 
@@ -40,7 +51,8 @@ export default class Renderer {
         window.addEventListener('mousedown', this.onMouseDown.bind(this), false);
 
         this.animate.bind(this)();
-        console.log(this.renderer.info)
+        
+        Renderer.instance = this;
     }
 
     animate() {
