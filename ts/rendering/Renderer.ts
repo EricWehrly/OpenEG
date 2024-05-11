@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Terrain } from '../Terrain';
+import { Terrain } from '../gameObjects/Terrain';
 import CameraController from './CameraController';
 import { Diagnostics } from './diagnostics';
 

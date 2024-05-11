@@ -1,7 +1,7 @@
 // Terrain.ts
 import * as THREE from 'three';
 import { Tile } from './Tile';
-import { TileRenderer } from './rendering/TileRenderer';
+import { TileRenderer } from '../rendering/TileRenderer';
 
 export class Terrain {
   tiles: Tile[][];
