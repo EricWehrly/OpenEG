@@ -1,7 +1,7 @@
 import { v4 as generateId } from 'uuid';
+import EventTypes from './EventTypes';
 
 class Event {
-
     eventName: string;
     detail: Object;
 }
@@ -17,25 +17,27 @@ class EventSubscription {
 // TODO: extends Listed
 export default class Events {
 
-    static List = {
-        "GameStart": "GameStart"
-    }
-
     private static Subscriptions: { [name: string] : EventSubscription[]; } = {};
 
     private static FiredEvents = {};
 
     static Context = {};
 
-    static Subscribe(eventNames: string, callback: Function, options: Object) {
+    static Subscribe(eventNames: EventTypes[], callback: Function, options: Object): string;
+    static Subscribe(eventNames: EventTypes, callback: Function, options: Object): string;
+
+    static Subscribe(eventNames: any, callback: Function, options: Object) : string {
 
         // TODO: check inputs for bad values
 
         if (Array.isArray(eventNames)) {
             eventNames.forEach(function (eventName) {
+                console.log(`Subscribing to ${eventName}`);
                 Events.subscribe(eventName, callback, options);
             });
+            return null;
         } else {
+            console.log(`Subscribing to ${eventNames}`);
             return Events.subscribe(eventNames, callback, options);
         }
     }
@@ -47,7 +49,7 @@ export default class Events {
      * @param {Boolean} options.removeAfterRaise Whether to de-register the event after the first time that it is raised, preventing subsequent calls from resulting in a raised event.
      * @param {Boolean} options.finalFire This is the last time the event will fire. All registrations after will fire immediately.
      */
-    static RaiseEvent(eventName: string, detail: Object, options: Object) {
+    static RaiseEvent(eventName: EventTypes, detail: Object, options?: Object) {
 
         /* TODO:
         if(options?.finalFire == true) {
@@ -107,16 +109,16 @@ export default class Events {
     // TODO: subscribeOnce
 
     /**
-     * @param {*} eventName 
+     * @param {*} eventType 
      * @param {*} callback 
      * @param {*} options 
      * @returns the id of the subscription if successful
      * @returns null if the event has already fired for the last time
      * but in that case it fires the subscription immediately
      */
-    private static subscribe(eventName: string, callback: Function, options: Object) {
+    private static subscribe(eventType: EventTypes, callback: Function, options: Object) : string {
 
-        if(eventName == undefined) debugger;
+        if(eventType == undefined) debugger;
         
         /* TODO:
         if (eventName in Events.FiredEvents) {
@@ -132,15 +134,15 @@ export default class Events {
 
         const subscriptionId = generateId();
 
-        if (!(eventName in Events.Subscriptions)) Events.Subscriptions[eventName] = [];
-        var length = Events.Subscriptions[eventName].push({
+        if (!(eventType in Events.Subscriptions)) Events.Subscriptions[eventType] = [];
+        var length = Events.Subscriptions[eventType].push({
             "subscriptionId": subscriptionId,
             "callback": callback
         });
         // these options are not used
-        if (options) Object.assign(Events.Subscriptions[eventName][length - 1], options);
+        if (options) Object.assign(Events.Subscriptions[eventType][length - 1], options);
 
-        Events.Subscriptions[eventName].sort(Events.sortEventsArray);
+        Events.Subscriptions[eventType].sort(Events.sortEventsArray);
 
         return subscriptionId;
     };
