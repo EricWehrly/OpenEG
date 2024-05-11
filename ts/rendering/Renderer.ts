@@ -2,6 +2,8 @@ import * as THREE from 'three';
 import { Terrain } from '../gameObjects/Terrain';
 import CameraController from './CameraController';
 import { Diagnostics } from './Diagnostics';
+import Events from '../core/Events';
+import EventTypes from '../core/EventTypes';
 
 // TODO: Make static & Singleton
 class Renderer {
@@ -70,8 +72,12 @@ class Renderer {
         if(event.button !== 0) return; // Only handle left clicks
 
         const intersects = this.getClickedObjects(event);
+        const intersected = intersects[0];
 
-        this.highlightObject(intersects[0]);
+        this.highlightObject(intersected);
+        // TODO: objects on different layers and determine which event type
+        Events.RaiseEvent(EventTypes.TileClicked, intersected);
+
         // for (let i = 0; i < intersects.length; i++) {
             // this.objectClicked(intersects[i]);
         // }

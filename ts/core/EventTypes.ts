@@ -4,6 +4,7 @@ enum EventTypes {
     WallClicked = "WallClicked",
     CharacterClicked = "CharacterClicked",
     FurnitureClicked = "FurnitureClicked",
+    GameObjectCreated = "GameObjectCreated",
 }
 
 export default EventTypes;
