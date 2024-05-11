@@ -7,7 +7,11 @@ export class Terrain {
   tiles: Tile[][];
 
   get center() {
-    return new THREE.Vector3(this.tiles.length / 2, 1, this.tiles[0].length / 2);
+    return new THREE.Vector3(
+      (this.tiles.length / 2) * TileRenderer.scaleFactor,
+      1 * TileRenderer.scaleFactor,
+      (this.tiles[0].length / 2) * TileRenderer.scaleFactor
+    );
   }
 
   constructor(width: number, height: number) {
