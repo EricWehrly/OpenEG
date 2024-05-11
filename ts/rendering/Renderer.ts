@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { Terrain } from '../gameObjects/Terrain';
 import CameraController from './CameraController';
-import { Diagnostics } from './diagnostics';
+import { Diagnostics } from './Diagnostics';
 
 // TODO: Make static & Singleton
-export default class Renderer {
+class Renderer {
 
-    private static instance: Renderer;
+    private static instance: Renderer = new Renderer();
 
     static getRenderer() {
         return Renderer.instance;
@@ -20,13 +20,11 @@ export default class Renderer {
     terrain: Terrain;
     diagnostics: Diagnostics;
 
-    constructor(terrain: Terrain) {
+    constructor() {
 
-        if(Renderer.instance) {
+        if(Renderer.instance != null) {
             throw new Error('Renderer is a singleton');
         }
-
-        this.terrain = terrain;
 
         this.scene = new THREE.Scene();
         this.renderer = new THREE.WebGLRenderer();
@@ -34,16 +32,15 @@ export default class Renderer {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
 
-        this.scene.add(terrain.render());
         this.renderer.setSize(window.innerWidth, window.innerHeight, false); // Set the canvas size without preserving the aspect ratio
 
         const cameraController = new CameraController(this.renderer.domElement);
         this.camera = cameraController.camera;
 
         this.camera.position.set(0, 90, 0);
-        const multipliedCenter = terrain.center.clone().multiplyScalar(30);
-        multipliedCenter.y = 1;
-        this.camera.lookAt(multipliedCenter);
+        // const multipliedCenter = terrain.center.clone().multiplyScalar(30);
+        // multipliedCenter.y = 1;
+        // this.camera.lookAt(multipliedCenter);
 
         // TODO: if diagnostics is enabled
         this.diagnostics = new Diagnostics(this.renderer);
@@ -53,6 +50,10 @@ export default class Renderer {
         this.animate.bind(this)();
         
         Renderer.instance = this;
+    }
+
+    addToScene(object: THREE.Object3D) {
+        this.scene.add(object);
     }
 
     animate() {
@@ -120,3 +121,5 @@ export default class Renderer {
         this.scene.add(line);
     }
 }
+
+export default Renderer.getRenderer();
