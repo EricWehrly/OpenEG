@@ -22,6 +22,9 @@ export default class Events {
     private static FiredEvents = {};
 
     static Context = {};
+    private static gameStarted: boolean = false;
+    private static eventQueue: Array<{ eventName: EventTypes, detail?: Object, options?: Object }> = [];
+
 
     static Subscribe(eventNames: EventTypes[], callback: Function, options?: Object): string;
     static Subscribe(eventNames: EventTypes, callback: Function, options?: Object): string;
@@ -32,12 +35,12 @@ export default class Events {
 
         if (Array.isArray(eventNames)) {
             eventNames.forEach(function (eventName) {
-                console.log(`Subscribing to ${eventName}`);
+                console.debug(`Subscribing to ${eventName}`);
                 Events.subscribe(eventName, callback, options);
             });
             return null;
         } else {
-            console.log(`Subscribing to ${eventNames}`);
+            console.debug(`Subscribing to ${eventNames}`);
             return Events.subscribe(eventNames, callback, options);
         }
     }
@@ -49,7 +52,25 @@ export default class Events {
      * @param {Boolean} options.removeAfterRaise Whether to de-register the event after the first time that it is raised, preventing subsequent calls from resulting in a raised event.
      * @param {Boolean} options.finalFire This is the last time the event will fire. All registrations after will fire immediately.
      */
-    static RaiseEvent(eventName: EventTypes, detail: Object, options?: Object) {
+    static RaiseEvent(eventName: EventTypes, detail?: Object, options?: Object) {
+
+        if (!this.gameStarted && eventName !== EventTypes.GameStart) {
+            // If the game hasn't started yet and the event isn't GameStart, add it to the queue
+            this.eventQueue.push({ eventName, detail, options });
+            return;
+        }
+
+        if (eventName === EventTypes.GameStart) {
+            // If the event is GameStart, set gameStarted to true and raise all the events in the queue
+            this.gameStarted = true;
+
+            for (let event of this.eventQueue) {
+                console.debug(`raising event ${event.eventName}`);
+                this.RaiseEvent(event.eventName, event.detail, event.options);
+            }
+
+            delete this.eventQueue;
+        }
 
         /* TODO:
         if(options?.finalFire == true) {
@@ -69,9 +90,9 @@ export default class Events {
         subscribedEvents = subscribedEvents.slice(0)   // create an unmodified copy, to survive modifications
 
         for (var subscription of subscribedEvents) {
-            Events.Context = detail;
+            Events.Context = detail || {};
             Events.raiseSubscription(subscription.callback, {
-                detail,
+                detail: detail || {},
                 eventName
             });
 
