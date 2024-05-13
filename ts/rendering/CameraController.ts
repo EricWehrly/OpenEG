@@ -5,8 +5,8 @@ export default class CameraController {
     
     xSpeed: number = 0.1;
     zSpeed: number = 0.1;
-    acceleration: number = 0.025;
-    initialSpeed: number = 0.2;
+    acceleration: number = 0.0035;
+    initialSpeed: number = 0.1;
     camera: THREE.Camera;
     controls: OrbitControls;
     distance: number = 90; // Declare distance as a class-level variable
@@ -47,7 +47,6 @@ export default class CameraController {
     }
 
     onKeyDown(event: KeyboardEvent) {
-        console.log('down')
         switch (event.key) {
             case 'w':
             case 'W':
@@ -69,7 +68,6 @@ export default class CameraController {
     }
 
     onKeyUp(event: KeyboardEvent) {
-        console.log(event);
         this.xSpeed = this.initialSpeed;
         this.zSpeed = this.initialSpeed;
     }
