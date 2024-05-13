@@ -2,11 +2,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 export default class CameraController {
-    // ...
-
-    speed: number = 0.1;
+    
+    xSpeed: number = 0.1;
+    zSpeed: number = 0.1;
     acceleration: number = 0.025;
-    initialSpeed: number = 0.1;
+    initialSpeed: number = 0.2;
     camera: THREE.Camera;
     controls: OrbitControls;
     distance: number = 90; // Declare distance as a class-level variable
@@ -36,36 +36,41 @@ export default class CameraController {
         // ...
 
         // TODO: bring in loop from hivemind
+        // we can use a function that fractionalizes "elapsed" to smooth this out ...
         setInterval(() => {
-            this.speed += this.acceleration;
-        }, 250);
+            this.xSpeed += this.acceleration;
+            this.zSpeed += this.acceleration;
+        }, 10);
 
         window.addEventListener('keydown', this.onKeyDown.bind(this));
         window.addEventListener('keyup', this.onKeyUp.bind(this));
     }
 
     onKeyDown(event: KeyboardEvent) {
+        console.log('down')
         switch (event.key) {
             case 'w':
             case 'W':
-                this.camera.position.z -= this.speed;
+                this.camera.position.z -= this.zSpeed;
                 break;
             case 's':
             case 'S':
-                this.camera.position.z += this.speed;
+                this.camera.position.z += this.zSpeed;
                 break;
             case 'a':
             case 'A':
-                this.camera.position.x -= this.speed;
+                this.camera.position.x -= this.xSpeed;
                 break;
             case 'd':
             case 'D':
-                this.camera.position.x += this.speed;
+                this.camera.position.x += this.xSpeed;
                 break;
         }
     }
 
     onKeyUp(event: KeyboardEvent) {
-        this.speed = this.initialSpeed;
+        console.log(event);
+        this.xSpeed = this.initialSpeed;
+        this.zSpeed = this.initialSpeed;
     }
 }
