@@ -28,5 +28,30 @@ export default class CameraController {
             MIDDLE: THREE.MOUSE.DOLLY,
             RIGHT: THREE.MOUSE.ROTATE
         };
+        
+        window.addEventListener('keydown', this.onKeyDown.bind(this));
+    }
+
+    onKeyDown(event: KeyboardEvent) {
+        const speed = 1; // Adjust speed as needed
+
+        switch (event.key) {
+            case 'w':
+            case 'W':
+                this.camera.position.z -= speed;
+                break;
+            case 's':
+            case 'S':
+                this.camera.position.z += speed;
+                break;
+            case 'a':
+            case 'A':
+                this.camera.position.x -= speed;
+                break;
+            case 'd':
+            case 'D':
+                this.camera.position.x += speed;
+                break;
+        }
     }
 }
