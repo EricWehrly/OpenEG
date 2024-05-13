@@ -1,4 +1,4 @@
-import { v4 as generateId } from 'uuid';
+import { generateId } from "./util";
 import EventTypes from './EventTypes';
 
 class Event {
