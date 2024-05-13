@@ -23,10 +23,10 @@ export default class Events {
 
     static Context = {};
 
-    static Subscribe(eventNames: EventTypes[], callback: Function, options: Object): string;
-    static Subscribe(eventNames: EventTypes, callback: Function, options: Object): string;
+    static Subscribe(eventNames: EventTypes[], callback: Function, options?: Object): string;
+    static Subscribe(eventNames: EventTypes, callback: Function, options?: Object): string;
 
-    static Subscribe(eventNames: any, callback: Function, options: Object) : string {
+    static Subscribe(eventNames: any, callback: Function, options?: Object) : string {
 
         // TODO: check inputs for bad values
 
