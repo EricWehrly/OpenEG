@@ -1,3 +1,6 @@
+import CharacterRenderer from './rendering/CharacterRender';
+import EventTypes from './core/EventTypes';
+import Events from './core/Events';
 import Character from './gameObjects/Character';
 import { Terrain } from './gameObjects/Terrain';
 import Renderer from './rendering/Renderer';
@@ -11,5 +14,8 @@ Renderer.camera.lookAt(terrain.center);
 
 const characterPosition = terrain.center.clone();
 characterPosition.y += 1;
-const character = new Character(characterPosition);
-Renderer.addToScene(character.render());
+new Character(characterPosition);
+
+Events.RaiseEvent(EventTypes.GameStart);
+
+CharacterRenderer.nothing(); // This is a hack, to get the static block to run. It's a hack, but it works. I'm lazy. It's fine.
