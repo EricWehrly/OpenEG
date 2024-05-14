@@ -4,6 +4,8 @@ import Events from './core/Events';
 import Character from './gameObjects/Character';
 import { Terrain } from './gameObjects/Terrain';
 import Renderer from './rendering/Renderer';
+// manual import javascript extensions (tried global import, didn't work)
+import './jsExtensions/math';
 
 const terrain = new Terrain(10, 10);
 Renderer.addToScene(terrain.render());
