@@ -41,7 +41,7 @@ class Renderer {
         this.renderer.setSize(window.innerWidth, window.innerHeight, false); // Set the canvas size without preserving the aspect ratio
 
         const cameraController = new CameraController(this.renderer.domElement);
-        this.camera = cameraController.camera;
+        this.camera = cameraController.getCamera();
 
         // TODO: if diagnostics is enabled
         this.diagnostics = new Diagnostics(this.renderer);
