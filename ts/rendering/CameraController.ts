@@ -62,6 +62,7 @@ export default class CameraController {
         const aspectRatio = window.innerWidth / window.innerHeight;
 
         this.camera = new THREE.OrthographicCamera(-this.distance * aspectRatio, this.distance * aspectRatio, this.distance, -this.distance, 1, 1000);
+        this.camera.layers.enableAll();
         this.camera.position.set(2, 2, 2);
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
 

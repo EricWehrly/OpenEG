@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { Tile } from '../gameObjects/Tile';
+import RendererLayers from './RendererLayers';
 
 export class TileRenderer {
   static scaleFactor = 1;
@@ -9,6 +10,7 @@ export class TileRenderer {
     // TODO: Cache this
     const material = new THREE.MeshBasicMaterial({ color: tile.getMaterialColor() });
     const mesh = new THREE.Mesh(geometry, material);
+    mesh.layers.set(RendererLayers.Floors);
     // mesh.scale.set(TileRenderer.scaleFactor, TileRenderer.scaleFactor, TileRenderer.scaleFactor);
 
     // Create an outline for the mesh

@@ -4,6 +4,7 @@ import Events from '../core/Events';
 import Character from '../gameObjects/Character';
 import EventTypes from '../core/EventTypes';
 import Renderer from './Renderer';
+import RendererLayers from './RendererLayers';
 
 export default class CharacterRenderer {
     mesh: THREE.Mesh;
@@ -30,12 +31,14 @@ export default class CharacterRenderer {
             // side: THREE.DoubleSide
         }); // Banana yellow color
         this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.layers.set(RendererLayers.Characters);
         // this.mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
         if(character.position) {
             this.mesh.position.set(character.position.x, character.position.y, character.position.z);
         }
         
+
         Renderer.addToScene(this.mesh);
     }
 }
