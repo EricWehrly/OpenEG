@@ -4,6 +4,7 @@ import CameraController from './CameraController';
 import { Diagnostics } from './Diagnostics';
 import Events from '../core/Events';
 import EventTypes from '../core/EventTypes';
+import RendererLayers, { getLayerFromMask } from './RendererLayers';
 
 // TODO: Make static & Singleton
 class Renderer {
@@ -35,6 +36,10 @@ class Renderer {
         this.scene = new THREE.Scene();
         this.renderer = new THREE.WebGLRenderer();
         this.raycaster = new THREE.Raycaster();
+        this.raycaster.layers.set(RendererLayers.Terrain);
+        this.raycaster.layers.enable(RendererLayers.Floors);
+        this.raycaster.layers.enable(RendererLayers.Characters);
+        this.raycaster.layers.enable(RendererLayers.Furniture);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
 
@@ -75,9 +80,17 @@ class Renderer {
         if(intersects.length === 0) return; // No objects clicked
         const intersected = intersects[0];
 
+        // TODO: Highlighting should work differently for different types of objects
         this.highlightObject(intersected);
-        // TODO: objects on different layers and determine which event type
-        Events.RaiseEvent(EventTypes.TileClicked, intersected);
+        
+        const layerMask = intersected.object.layers.mask;
+        const layerNumber = getLayerFromMask(layerMask);
+        if(layerNumber == RendererLayers.Floors) {
+            Events.RaiseEvent(EventTypes.TileClicked, intersected);
+        }
+        if(layerNumber == RendererLayers.Characters) {
+            Events.RaiseEvent(EventTypes.CharacterClicked, intersected);
+        }
 
         // for (let i = 0; i < intersects.length; i++) {
             // this.objectClicked(intersects[i]);
