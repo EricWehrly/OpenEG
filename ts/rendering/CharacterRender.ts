@@ -30,8 +30,11 @@ export default class CharacterRenderer {
             color: 0xffff00,
             // side: THREE.DoubleSide
         }); // Banana yellow color
-        this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh = new THREE.Mesh(geometry, material);        
+        this.mesh.userData.character = character;
         this.mesh.layers.set(RendererLayers.Characters);
+        // TODO: ... shadows?
+        this.mesh.castShadow = true;
         // this.mesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
         if(character.position) {

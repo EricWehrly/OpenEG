@@ -86,10 +86,12 @@ class Renderer {
         const layerMask = intersected.object.layers.mask;
         const layerNumber = getLayerFromMask(layerMask);
         if(layerNumber == RendererLayers.Floors) {
-            Events.RaiseEvent(EventTypes.TileClicked, intersected);
+            const tile = intersected.object.userData.tile;
+            Events.RaiseEvent(EventTypes.TileClicked, tile);
         }
         if(layerNumber == RendererLayers.Characters) {
-            Events.RaiseEvent(EventTypes.CharacterClicked, intersected);
+            const character = intersected.object.userData.character;
+            Events.RaiseEvent(EventTypes.CharacterClicked, character);
         }
 
         // for (let i = 0; i < intersects.length; i++) {

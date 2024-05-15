@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import GameObject from './GameObject';
+import Vector3 from '../core/Vector3';
 
 export enum TileMaterial {
     Dirt,
@@ -12,10 +13,10 @@ export class Tile extends GameObject {
     material: TileMaterial;
     borderColor: THREE.Color;
 
-    constructor(material: TileMaterial = TileMaterial.Dirt, borderColor?: THREE.Color) {
-        super();
-        
-        this.material = material;
+    constructor(material?: TileMaterial, borderColor?: THREE.Color, position?: Vector3) {
+        super(position);
+
+        this.material = material || TileMaterial.Dirt;
         this.borderColor = borderColor || new THREE.Color(0x000000); // Default to black if no color is provided
     }
 

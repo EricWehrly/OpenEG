@@ -1,7 +1,7 @@
-// Terrain.ts
 import * as THREE from 'three';
 import { Tile } from './Tile';
 import { TileRenderer } from '../rendering/TileRenderer';
+import Vector3 from '../core/Vector3';
 
 export class Terrain {
   tiles: Tile[][];
@@ -19,7 +19,8 @@ export class Terrain {
     for (let i = 0; i < width; i++) {
       this.tiles[i] = [];
       for (let j = 0; j < height; j++) {
-        this.tiles[i][j] = new Tile();
+        const position = new Vector3(i, 0, j);
+        this.tiles[i][j] = new Tile(null, null, position);
       }
     }
   }

@@ -6,6 +6,8 @@ import { Terrain } from './gameObjects/Terrain';
 import Renderer from './rendering/Renderer';
 // manual import javascript extensions (tried global import, didn't work)
 import './jsExtensions/math';
+// hack to include this, too. For now.
+import './ui/Interface';
 
 const terrain = new Terrain(10, 10);
 Renderer.addToScene(terrain.render());
@@ -20,4 +22,4 @@ new Character(characterPosition);
 
 Events.RaiseEvent(EventTypes.GameStart);
 
-CharacterRenderer.nothing(); // This is a hack, to get the static block to run. It's a hack, but it works. I'm lazy. It's fine.
+CharacterRenderer.nothing(); // This is a hack, to get the static block to run

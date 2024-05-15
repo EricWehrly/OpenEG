@@ -10,6 +10,7 @@ export class TileRenderer {
     // TODO: Cache this
     const material = new THREE.MeshBasicMaterial({ color: tile.getMaterialColor() });
     const mesh = new THREE.Mesh(geometry, material);
+    mesh.userData.tile = tile;
     mesh.layers.set(RendererLayers.Floors);
     // mesh.scale.set(TileRenderer.scaleFactor, TileRenderer.scaleFactor, TileRenderer.scaleFactor);
 
