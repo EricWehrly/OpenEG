@@ -11,6 +11,7 @@ export default Interface;
 
 Events.Subscribe(EventTypes.CharacterClicked, (character: Character) => {
     Interface.selectedCharacter = character;
+    console.log(`Character selected:`, character);
 });
 
 Events.Subscribe(EventTypes.TileClicked, (tile: Tile) => {

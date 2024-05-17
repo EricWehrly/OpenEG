@@ -1,4 +1,4 @@
-import CharacterRenderer from './rendering/CharacterRender';
+import CharacterRenderer from './rendering/CharacterRenderer';
 import EventTypes from './core/EventTypes';
 import Events from './core/Events';
 import Character from './gameObjects/Character';

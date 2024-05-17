@@ -23,6 +23,8 @@ class Renderer {
     terrain: Terrain;
     diagnostics: Diagnostics;
 
+    private renderMethods: Function[] = [];
+
     getCamera() {
         return this.camera;
     }
@@ -56,6 +58,8 @@ class Renderer {
         this.animate.bind(this)();
         
         Renderer.instance = this;
+
+        this.renderLoop.bind(this)();
     }
 
     addToScene(object: THREE.Object3D) {
@@ -116,6 +120,10 @@ class Renderer {
         return intersects;
     }
 
+    registerRenderMethod(method: Function) {
+        this.renderMethods.push(method);
+    }
+
     private highlightObject(intersect: THREE.Intersection<THREE.Object3D>) {
 
         // We need to use "parent" in order to get the group that controls the object positioning
@@ -140,6 +148,15 @@ class Renderer {
         const geometry = new THREE.BufferGeometry().setFromPoints(points);
         const line = new THREE.Line(geometry, lineMaterial);
         this.scene.add(line);
+    }
+
+    private renderLoop() {
+
+        for(var method of this.renderMethods) {
+            method();
+        }
+
+        window.requestAnimationFrame(this.renderLoop.bind(this));
     }
 }
 
